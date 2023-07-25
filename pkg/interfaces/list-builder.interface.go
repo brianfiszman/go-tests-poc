@@ -1,10 +1,6 @@
 package interfaces
 
-import (
-	"tddservice.com/pkg/domain/entities"
-)
-
-type ListBuilder interface {
-	WithCustomFunc(customFunc func(*Builder[any])) *ListBuilder
-	Build() []*entities.User
+type ListBuilder[T any] interface {
+	WithCustomFunc(customFunc func(*Builder[T])) *ListBuilder[T]
+	Build() []*T
 }

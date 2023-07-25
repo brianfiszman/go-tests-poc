@@ -3,6 +3,7 @@ package mocks
 import (
 	"github.com/brianvoe/gofakeit/v6"
 	"tddservice.com/pkg/domain/entities"
+	"tddservice.com/pkg/interfaces"
 )
 
 type UserBuilder struct {
@@ -10,7 +11,7 @@ type UserBuilder struct {
 }
 
 // NewUserBuilder creates an User Instance with default values
-func NewUserBuilder() *UserBuilder {
+func NewUserBuilder() interfaces.UserBuilder {
 	user := &entities.User{}
 
 	gofakeit.Struct(user)
@@ -20,13 +21,13 @@ func NewUserBuilder() *UserBuilder {
 	}
 }
 
-func (b *UserBuilder) WithName(name string) *UserBuilder {
+func (b *UserBuilder) WithName(name string) interfaces.UserBuilder {
 	b.user.Username = name
 
 	return b
 }
 
-func (b *UserBuilder) WithEmail(email string) *UserBuilder {
+func (b *UserBuilder) WithEmail(email string) interfaces.UserBuilder {
 	b.user.Email = email
 
 	return b
