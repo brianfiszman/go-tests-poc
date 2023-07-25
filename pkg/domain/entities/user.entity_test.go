@@ -31,6 +31,7 @@ func TestUser(t *testing.T) {
 			{User: entities.NewUser("foo", "foobar@gmail.com"), expected: errors.New(entities.ERR_NAME_SHORT)},
 			{User: entities.NewUser("", "foobar@gmail.com"), expected: errors.New(entities.ERR_NAME_EMPTY)},
 			{User: entities.NewUser("foobar", "foobar.gmail.com"), expected: getMailError("foobar.gmail.com")},
+			{User: entities.NewUser("foobar", ""), expected: getMailError("")},
 		}
 
 		for _, tc := range testCases {

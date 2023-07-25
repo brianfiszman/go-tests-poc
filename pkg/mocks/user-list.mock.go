@@ -2,15 +2,16 @@ package mocks
 
 import (
 	"tddservice.com/pkg/domain/entities"
+	"tddservice.com/pkg/interfaces"
 )
 
 type UserListBuilder struct {
-	UserBuilderList []*UserBuilder
+	UserBuilderList []interfaces.UserBuilder
 	quantity        int
 }
 
-func NewUserListBuilder(quantity int) *UserListBuilder {
-	var builderList []*UserBuilder = make([]*UserBuilder, 0, quantity)
+func NewUserListBuilder(quantity int) interfaces.UserListBuilder {
+	var builderList []interfaces.UserBuilder = make([]interfaces.UserBuilder, 0, quantity)
 
 	for i := 0; i < quantity; i++ {
 		builderList = append(builderList, NewUserBuilder())
@@ -19,10 +20,9 @@ func NewUserListBuilder(quantity int) *UserListBuilder {
 	return &UserListBuilder{quantity: quantity, UserBuilderList: builderList}
 }
 
-func (u *UserListBuilder) WithCustomFunc(customFunc func(*UserBuilder)) *UserListBuilder {
+func (u *UserListBuilder) WithCustomFunc(customFunc func(interfaces.UserBuilder)) interfaces.UserListBuilder {
 	for i := 0; i < u.quantity; i++ {
 		customFunc(u.UserBuilderList[i])
-		u.UserBuilderList = append(u.UserBuilderList, u.UserBuilderList[i])
 	}
 
 	return u

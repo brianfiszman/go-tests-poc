@@ -2,7 +2,6 @@ package mocks_test
 
 import (
 	"errors"
-	"net/mail"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,11 +9,6 @@ import (
 	"tddservice.com/pkg/interfaces"
 	"tddservice.com/pkg/mocks"
 )
-
-func getMailError(email string) error {
-	_, err := mail.ParseAddress(email)
-	return err
-}
 
 func TestBuilder(t *testing.T) {
 	var builder interfaces.UserBuilder = mocks.NewUserBuilder()
@@ -35,13 +29,17 @@ func TestBuilder(t *testing.T) {
 			{UserBuilder: mocks.NewUserBuilder().WithName("foo"), expected: errors.New(entities.ERR_NAME_SHORT)},
 			{UserBuilder: mocks.NewUserBuilder().WithName(""), expected: errors.New(entities.ERR_NAME_EMPTY)},
 			{UserBuilder: mocks.NewUserBuilder().WithEmail("foobar.gmail.com"), expected: getMailError("foobar.gmail.com")},
+			{UserBuilder: mocks.NewUserBuilder().WithEmail(""), expected: getMailError("")},
 		}
 
 		for _, tc := range testCases {
 			t.Run(tc.expected.Error(), func(t *testing.T) {
-				// Asserting Error with short name
-				assert.NotNil(t, tc.Build())
-				assert.EqualError(t, tc.Build().IsUserValid(), tc.expected.Error())
+				// Build the user
+				user := tc.Build()
+
+				// Asserting Errors
+				assert.NotNil(t, user)
+				assert.EqualError(t, user.IsUserValid(), tc.expected.Error())
 			})
 		}
 	})

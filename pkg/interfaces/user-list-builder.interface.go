@@ -3,5 +3,6 @@ package interfaces
 import "tddservice.com/pkg/domain/entities"
 
 type UserListBuilder interface {
-	ListBuilder[entities.User]
+	WithCustomFunc(customFunc func(UserBuilder)) UserListBuilder
+	Build() []*entities.User
 }
